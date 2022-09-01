@@ -124,7 +124,7 @@ namespace WebApi_Test.Repositorys
                        
         }
 
-        private Client_DTO MapToValues(SqlDataReader reader)
+        private Client MapToValues(SqlDataReader reader)
         {
             Client client = new Client();
             client.Id = (int)reader[0];
@@ -141,7 +141,7 @@ namespace WebApi_Test.Repositorys
             try
             {
 
-                Client_DTO client = new Client_DTO();
+                Client client = new Client();
                 SqlConnection sql = new SqlConnection(_connectionString);
                 SqlCommand cmd = sql.CreateCommand();
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
