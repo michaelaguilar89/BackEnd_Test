@@ -36,6 +36,27 @@ namespace WebApi_Test.Controllers
             return Ok(_response);
             
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var respuesta = await _repository.GetById(id);
+                _response.IsSucces = true;
+                _response.DisplayMessages = "Customer Information";
+                _response.Result = respuesta;
+                return Ok(_response);
+            }
+            catch (Exception e)
+            {
+
+                _response.DisplayMessages = "Client not found";
+                _response.ErrorMessages = new List<string> { e.ToString() };
+            }
+            return BadRequest(_response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(Client_DTO client)
         {
@@ -95,6 +116,34 @@ namespace WebApi_Test.Controllers
             {
 
                 _response.ErrorMessages = new List<string> { e.ToString() };
+                return BadRequest(_response);
+            }
+            return Ok(_response);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var respuesta = await _repository.Delete(id);
+                if (respuesta==true)
+                {
+                    _response.IsSucces=true;
+                    _response.DisplayMessages = "The Client has been deleted";
+                   
+
+                }
+                if (respuesta==false)
+                {
+                    _response.DisplayMessages = "The Client has not been deleted";
+                    return BadRequest(_response);
+                }
+            }
+            catch (Exception e)
+            {
+                _response.DisplayMessages = "Error : The Client has not been deleted";
+                _response.ErrorMessages = new List<string> { e.Message };
                 return BadRequest(_response);
             }
             return Ok(_response);

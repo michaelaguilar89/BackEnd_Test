@@ -5,9 +5,9 @@ namespace WebApi_Test.Interfaces
     public interface IClients
     {
         Task<List<Client>> Get();
-        Task<Object> Get(int id);
+        Task<Object> GetById(int id);
 
         Task<string> CreateUpdate(Client_DTO client);
-        Task<string> Delete(int id);
+        Task<bool> Delete(int id);
     }
 }

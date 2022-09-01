@@ -67,7 +67,7 @@ namespace WebApi_Test.Repositorys
                 return "Internal error of server";
             } }
 
-        public async Task<string> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             try
             {
@@ -85,13 +85,13 @@ namespace WebApi_Test.Repositorys
                 await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
                 await sql.CloseAsync();
-                return "The was eliminated";
+                return true;
 
             }
             catch (Exception)
             {
 
-                return "Internal error of server";
+                return false;
             }
         }
 
@@ -136,7 +136,7 @@ namespace WebApi_Test.Repositorys
             return client;
 
         }
-        public async Task<Object> Get(int id)
+        public async Task<Object> GetById(int id)
         {
             try
             {
