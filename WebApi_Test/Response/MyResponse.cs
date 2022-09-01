@@ -1,6 +1,6 @@
 ﻿namespace WebApi_Test.Response
 {
-    public class Response
+    public class MyResponse
     {
         public Object? Result { get; set; }
 

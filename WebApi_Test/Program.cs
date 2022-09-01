@@ -14,7 +14,9 @@ builder.Services.AddDbContext<testContext>(opt =>
 
 
 //add automapper
-builder.Services.AddAutoMapper(typeof(Program));
+var mapper =MappingConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //add repositorys and interface
 builder.Services.AddScoped<IClients, Clients_Repository>();
 builder.Services.AddControllers();
