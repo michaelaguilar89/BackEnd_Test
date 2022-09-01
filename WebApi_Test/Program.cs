@@ -1,18 +1,28 @@
 using Microsoft.EntityFrameworkCore;
+using WebApi_Test.Interfaces;
+using WebApi_Test.Mapping;
 using WebApi_Test.Models;
+using WebApi_Test.Repositorys;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<testContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+
+//add automapper
+builder.Services.AddAutoMapper(typeof(Program));
+//add repositorys and interface
+builder.Services.AddScoped<IClients, Clients_Repository>();
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 
