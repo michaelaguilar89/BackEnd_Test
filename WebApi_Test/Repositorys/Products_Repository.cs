@@ -1,6 +1,8 @@
-﻿namespace WebApi_Test.Repositorys
+﻿using WebApi_Test.Interfaces;
+
+namespace WebApi_Test.Repositorys
 {
-    public class Products_Repository
+    public class Products_Repository:IProducts
     {
     }
 }

@@ -19,6 +19,9 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //add repositorys and interface
 builder.Services.AddScoped<IClients, Clients_Repository>();
+builder.Services.AddScoped<IUsers, Users_Repository>();
+builder.Services.AddScoped<IProducts,Products_Repository>();
+builder.Services.AddScoped<ISales, Sales_Repository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
