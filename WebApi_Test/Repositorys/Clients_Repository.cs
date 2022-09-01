@@ -95,10 +95,10 @@ namespace WebApi_Test.Repositorys
             }
         }
 
-        public async Task<List<Client>> Get()
+        public async Task<List<Client_DTO>> Get()
         {
 
-                var list = new List<Client>();
+                var list = new List<Client_DTO>();
                 SqlConnection sql = new SqlConnection(_connectionString);
                 SqlCommand cmd = sql.CreateCommand();
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -124,9 +124,9 @@ namespace WebApi_Test.Repositorys
                        
         }
 
-        private Client MapToValues(SqlDataReader reader)
+        private Client_DTO MapToValues(SqlDataReader reader)
         {
-            Client client = new Client();
+            Client_DTO client = new Client_DTO();
             client.Id = (int)reader[0];
             client.FirstName = (string)reader[1];
             client.LastName = (string)reader[2];
@@ -136,12 +136,11 @@ namespace WebApi_Test.Repositorys
             return client;
 
         }
-        public async Task<Object> GetById(int id)
+        public async Task<Client_DTO> GetById(int id)
         {
-            try
-            {
+            
 
-                Client client = new Client();
+                Client_DTO client = new Client_DTO();
                 SqlConnection sql = new SqlConnection(_connectionString);
                 SqlCommand cmd = sql.CreateCommand();
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -164,14 +163,10 @@ namespace WebApi_Test.Repositorys
                 }
 
                 await sql.CloseAsync();
+            
                 return client;
 
-            }
-            catch (Exception)
-            {
-
-                return "Client not found";
-            }
+                       
         }
     }
 }

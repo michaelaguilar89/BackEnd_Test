@@ -18,10 +18,10 @@ namespace WebApi_Test.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Client>>> Get()
+        public async Task<ActionResult<IEnumerable<Client_DTO>>> Get()
         {
             try
-            { List<Client> list = new List<Client>();
+            { List<Client_DTO> list = new List<Client_DTO>();
                 list = await _repository.Get();
                 _response.Result =list;
                 _response.DisplayMessages = "Client List";
@@ -37,15 +37,23 @@ namespace WebApi_Test.Controllers
             
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             try
-            {
-                var respuesta = await _repository.GetById(id);
+            { Client_DTO client = new Client_DTO();             
+                  client  = await _repository.GetById(id);
+                if (client.Id==0)
+                {
+                     _response.DisplayMessages = "Client not found";
+                     return BadRequest(_response);
+                }
+
+
+
                 _response.IsSucces = true;
                 _response.DisplayMessages = "Customer Information";
-                _response.Result = respuesta;
+                _response.Result = client;
                 return Ok(_response);
             }
             catch (Exception e)
@@ -63,7 +71,7 @@ namespace WebApi_Test.Controllers
             try
             {
                 string mensaje = await _repository.CreateUpdate(client);
-                if (mensaje=="The Client added")
+                if (mensaje=="New Client added")
                 {
                     _response.IsSucces = true;
                     _response.DisplayMessages = mensaje;
@@ -94,23 +102,36 @@ namespace WebApi_Test.Controllers
         {
             try
             {
-                string mensaje = await _repository.CreateUpdate(client);
-                if (mensaje == "The Client was update")
+                Client_DTO _client = new Client_DTO();
+                _client = await _repository.GetById(client.Id);
+                if (client.Id == 0)
                 {
-                    _response.IsSucces = true;
-                    _response.DisplayMessages = mensaje;
-                    _response.Result = client;
-                   
-
-                }
-                if (mensaje == "Internal error of server")
-                {
-
-                    _response.DisplayMessages = mensaje;
-
+                    _response.DisplayMessages = "Client not found";
                     return BadRequest(_response);
-
                 }
+                else
+                {
+                    string mensaje = await _repository.CreateUpdate(client);
+                    if (mensaje == "The Client was update")
+                    {
+                        _response.IsSucces = true;
+                        _response.DisplayMessages = mensaje;
+                        _response.Result = client;
+
+
+                    }
+                    if (mensaje == "Internal error of server")
+                    {
+
+                        _response.DisplayMessages = mensaje;
+
+                        return BadRequest(_response);
+
+                    }
+                }
+
+
+                
             }
             catch (Exception e)
             {
@@ -121,23 +142,34 @@ namespace WebApi_Test.Controllers
             return Ok(_response);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var respuesta = await _repository.Delete(id);
-                if (respuesta==true)
+                Client_DTO _client = new Client_DTO();
+                _client = await _repository.GetById(id);
+                if (_client.Id == 0)
                 {
-                    _response.IsSucces=true;
-                    _response.DisplayMessages = "The Client has been deleted";
-                   
-
-                }
-                if (respuesta==false)
-                {
-                    _response.DisplayMessages = "The Client has not been deleted";
+                    _response.DisplayMessages = "Client not found";
                     return BadRequest(_response);
+                }
+                else
+                {
+
+                    var respuesta = await _repository.Delete(id);
+                    if (respuesta == true)
+                    {
+                        _response.IsSucces = true;
+                        _response.DisplayMessages = "The Client has been deleted";
+
+
+                    }
+                    if (respuesta == false)
+                    {
+                        _response.DisplayMessages = "The Client has not been deleted";
+                        return BadRequest(_response);
+                    }
                 }
             }
             catch (Exception e)
